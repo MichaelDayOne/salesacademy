@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sales Onboarding Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F1E8;
+    --bg-card:#FFFDF8;
+    --ink:#181614;
+    --ink-2:#3D3833;
+    --muted:#7A726A;
+    --line:#E5DDD0;
+    --line-strong:#CFC4B0;
+    --accent:#C8451F;
+    --accent-soft:#FBE8DF;
+    --accent-deep:#9E2F12;
+    --ok:#2F7A4A;
+    --ok-soft:#DDF0E3;
+    --warn:#B45309;
+    --err:#A02525;
+    --err-soft:#F8DCDC;
+    --radius:14px;
+    --radius-sm:8px;
+    --shadow-sm:0 1px 0 rgba(24,22,20,.04), 0 1px 3px rgba(24,22,20,.06);
+    --shadow-md:0 2px 4px rgba(24,22,20,.05), 0 10px 30px rgba(24,22,20,.07);
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ---------- Layout ---------- */
+  .app{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    min-height:100vh;
+  }
+  aside.sidebar{
+    background:#15110E;
+    color:#EFE6D4;
+    padding:28px 22px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    border-right:1px solid #2A231D;
+  }
+  main.content{
+    padding:48px 56px 96px;
+    max-width:980px;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .brand{
+    display:flex;align-items:center;gap:10px;margin-bottom:28px;
+  }
+  .brand-mark{
+    width:32px;height:32px;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),#E37A4F);
+    display:grid;place-items:center;
+    font-family:var(--font-display);font-weight:700;color:#fff;font-size:18px;
+  }
+  .brand-name{
+    font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.01em;
+  }
+  .brand-sub{
+    font-size:11px;color:#8E8472;text-transform:uppercase;letter-spacing:.12em;margin-top:2px;
+  }
+
+  .progress-block{
+    background:#1F1A15;
+    border:1px solid #2A231D;
+    border-radius:var(--radius-sm);
+    padding:14px;
+    margin-bottom:24px;
+  }
+  .progress-label{
+    font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#8E8472;margin-bottom:8px;
+  }
+  .progress-bar{
+    height:6px;background:#2A231D;border-radius:99px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#E37A4F);transition:width .4s ease;
+  }
+  .progress-pct{font-size:13px;font-weight:600;margin-top:8px;color:#EFE6D4}
+
+  .nav-section-title{
+    font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#8E8472;margin:18px 0 8px;font-weight:600;
+  }
+  .nav-list{list-style:none;padding:0;margin:0}
+  .nav-item{
+    padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13.5px;color:#D8CDB6;margin-bottom:2px;
+    display:flex;align-items:center;gap:10px;transition:background .15s;
+  }
+  .nav-item:hover{background:#1F1A15;color:#fff}
+  .nav-item.active{background:var(--accent);color:#fff}
+  .nav-item .dot{
+    width:8px;height:8px;border-radius:50%;background:#3D3833;flex-shrink:0;
+  }
+  .nav-item.completed .dot{background:var(--ok)}
+  .nav-item.active .dot{background:#fff}
+  .nav-item .lbl-num{
+    font-family:var(--font-mono);font-size:11px;opacity:.7;
+  }
+
+  /* ---------- Main / Content ---------- */
+  .crumb{
+    font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:10px;font-weight:600;
+  }
+  h1.page-title{
+    font-family:var(--font-display);font-weight:600;font-size:54px;line-height:1.05;letter-spacing:-.02em;margin:0 0 18px;
+  }
+  h1.page-title em{font-style:italic;color:var(--accent);font-weight:500}
+  .page-lede{font-size:18px;color:var(--ink-2);max-width:680px;margin:0 0 36px}
+
+  h2.section-title{
+    font-family:var(--font-display);font-weight:600;font-size:34px;line-height:1.15;letter-spacing:-.015em;margin:0 0 14px;
+  }
+  h3.course-title{
+    font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1.2;margin:0;
+  }
+  h4{
+    font-family:var(--font-display);font-weight:600;font-size:19px;margin:28px 0 10px;letter-spacing:-.01em;
+  }
+  h5{
+    font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600;margin:24px 0 10px;
+  }
+
+  p{margin:0 0 14px;color:var(--ink-2)}
+  ul,ol{margin:0 0 14px;padding-left:22px;color:var(--ink-2)}
+  ul li,ol li{margin-bottom:6px}
+  strong{color:var(--ink);font-weight:600}
+
+  /* ---------- Cards & Panels ---------- */
+  .panel{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px 30px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow-sm);
+  }
+  .module-overview-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px;
+  }
+  .module-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px;
+    cursor:pointer;
+    transition:transform .15s, box-shadow .2s, border-color .15s;
+    position:relative;
+  }
+  .module-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--line-strong)}
+  .module-card .mod-num{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--accent);font-weight:500;text-transform:uppercase;
+  }
+  .module-card h3{
+    font-family:var(--font-display);font-weight:600;font-size:22px;margin:6px 0 10px;letter-spacing:-.01em;
+  }
+  .module-card p{font-size:14px;color:var(--muted);margin:0 0 14px}
+  .module-card .stats{
+    display:flex;gap:14px;font-size:12px;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:12px;
+  }
+  .module-card .stats b{color:var(--ink);font-weight:600}
+  .module-card .pill{
+    position:absolute;top:18px;right:18px;
+    font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:4px 8px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent-deep);font-weight:600;
+  }
+  .module-card .pill.placeholder{
+    background:#EFE9DC;color:var(--muted);
+  }
+  .module-card .pill.completed{
+    background:var(--ok-soft);color:var(--ok);
+  }
+
+  /* ---------- Module page ---------- */
+  .module-header{
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;margin-bottom:28px;
+  }
+  .module-goals{
+    background:#FFF6EF;
+    border:1px solid #F1D9C2;
+    border-left:3px solid var(--accent);
+    border-radius:var(--radius-sm);
+    padding:18px 22px;
+    margin-top:18px;
+  }
+  .module-goals h5{margin-top:0;color:var(--accent-deep)}
+  .module-goals ul{margin-bottom:0}
+  .module-goals ul li{color:var(--ink-2)}
+
+  /* ---------- Accordion (Kurse) ---------- */
+  .accordion{display:flex;flex-direction:column;gap:14px}
+  .acc-item{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:border-color .15s;
+  }
+  .acc-item.open{border-color:var(--line-strong)}
+  .acc-header{
+    display:flex;align-items:center;gap:16px;
+    padding:18px 24px;cursor:pointer;
+    user-select:none;
+  }
+  .acc-header:hover{background:#FFFBF2}
+  .acc-num{
+    font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:500;
+    background:var(--accent-soft);padding:4px 8px;border-radius:6px;flex-shrink:0;
+  }
+  .acc-title{
+    font-family:var(--font-display);font-size:19px;font-weight:600;flex:1;letter-spacing:-.005em;
+  }
+  .acc-status{
+    font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;
+  }
+  .acc-status.done{color:var(--ok)}
+  .acc-chev{
+    width:22px;height:22px;display:grid;place-items:center;color:var(--muted);transition:transform .2s;
+  }
+  .acc-item.open .acc-chev{transform:rotate(90deg)}
+  .acc-body{
+    padding:0 30px 30px;
+    display:none;
+  }
+  .acc-item.open .acc-body{display:block}
+  .acc-body > h5:first-child{margin-top:8px}
+
+  /* ---------- Content blocks ---------- */
+  .goals-box{
+    background:#F6F1E8;
+    border-radius:var(--radius-sm);
+    padding:14px 18px;
+    margin-bottom:20px;
+    border-left:3px solid var(--ink);
+  }
+  .goals-box ul{margin:6px 0 0;padding-left:20px}
+  .goals-box li{font-size:14.5px}
+
+  .example{
+    background:#FFFBF2;
+    border:1px solid var(--line);
+    border-left:3px solid var(--warn);
+    border-radius:var(--radius-sm);
+    padding:14px 18px;
+    margin:14px 0;
+    font-size:14.5px;
+  }
+  .example h6{
+    font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--warn);font-weight:700;margin:0 0 6px;
+  }
+  .example.good{border-left-color:var(--ok)}
+  .example.good h6{color:var(--ok)}
+  .example.bad{border-left-color:var(--err)}
+  .example.bad h6{color:var(--err)}
+
+  .merksatz{
+    background:#181614;
+    color:#F6F1E8;
+    border-radius:var(--radius-sm);
+    padding:18px 22px;
+    margin:18px 0;
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:18px;
+    line-height:1.4;
+    position:relative;
+  }
+  .merksatz::before{
+    content:'„';position:absolute;left:14px;top:-2px;font-size:48px;color:var(--accent);font-family:var(--font-display);
+  }
+  .merksatz .quote-content{padding-left:30px}
+
+  .key-points{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;
+  }
+  .key-points .kp{
+    background:#F6F1E8;
+    border-radius:8px;padding:12px 14px;font-size:14px;color:var(--ink-2);
+  }
+  .key-points .kp b{display:block;color:var(--ink);margin-bottom:2px;font-size:13px}
+
+  table.tbl{
+    width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;
+  }
+  table.tbl th, table.tbl td{
+    padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);
+  }
+  table.tbl th{
+    background:#F6F1E8;font-weight:600;color:var(--ink);font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+  }
+  table.tbl tr:last-child td{border-bottom:none}
+
+  /* ---------- Quiz ---------- */
+  .quiz{
+    background:var(--bg-card);
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-top:22px;
+  }
+  .quiz h5{color:var(--accent);margin-top:0}
+  .quiz h4{margin-top:0}
+  .quiz-q{
+    margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--line);
+  }
+  .quiz-q:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .quiz-q-text{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px}
+  .quiz-options{display:flex;flex-direction:column;gap:8px}
+  .quiz-opt{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 14px;
+    background:#FFFBF2;
+    border:1px solid var(--line);
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14.5px;
+    transition:background .15s, border-color .15s;
+    text-align:left;
+    color:var(--ink-2);
+    font-family:inherit;
+  }
+  .quiz-opt:hover:not(.locked){background:#FFF3E0;border-color:var(--line-strong)}
+  .quiz-opt.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+  .quiz-opt.wrong{background:var(--err-soft);border-color:var(--err);color:var(--err)}
+  .quiz-opt.locked{cursor:default;opacity:.7}
+  .quiz-opt.locked.correct, .quiz-opt.locked.wrong{opacity:1}
+  .quiz-opt .opt-letter{
+    font-family:var(--font-mono);font-size:12px;font-weight:600;
+    flex-shrink:0;width:20px;
+  }
+  .quiz-feedback{
+    margin-top:10px;font-size:13.5px;padding:10px 14px;border-radius:6px;display:none;
+  }
+  .quiz-feedback.show{display:block}
+  .quiz-feedback.correct{background:var(--ok-soft);color:var(--ok)}
+  .quiz-feedback.wrong{background:var(--err-soft);color:var(--err)}
+
+  /* ---------- Übung ---------- */
+  .uebung{
+    background:#F6F1E8;
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin:20px 0;
+    border:1px solid var(--line);
+  }
+  .uebung h5{color:var(--accent);margin-top:0}
+  .uebung textarea{
+    width:100%;min-height:90px;padding:12px;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    background:#fff;
+    font-family:inherit;
+    font-size:14px;
+    color:var(--ink);
+    resize:vertical;
+    margin-top:8px;
+  }
+  .uebung textarea:focus{outline:none;border-color:var(--accent)}
+
+  /* ---------- Checkliste / Notizen ---------- */
+  .check-list{
+    margin:14px 0;display:flex;flex-direction:column;gap:6px;
+  }
+  .check-list label{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 12px;background:#FFFBF2;border:1px solid var(--line);
+    border-radius:6px;cursor:pointer;font-size:14px;color:var(--ink-2);
+  }
+  .check-list label:hover{background:#FFF3E0}
+  .check-list input[type="checkbox"]{
+    width:16px;height:16px;accent-color:var(--accent);
+  }
+  .check-list label.checked{
+    background:var(--ok-soft);border-color:var(--ok);color:var(--ok);text-decoration:line-through;
+  }
+
+  .notes-area{
+    margin-top:24px;background:#FFFBF2;border:1px dashed var(--line-strong);border-radius:var(--radius-sm);padding:16px 20px;
+  }
+  .notes-area h5{color:var(--accent);margin-top:0}
+  .notes-area textarea{
+    width:100%;min-height:80px;padding:10px 12px;
+    border:1px solid var(--line);border-radius:6px;
+    background:#fff;font-family:inherit;font-size:14px;color:var(--ink);
+    resize:vertical;
+  }
+  .notes-area .saved{font-size:11px;color:var(--ok);margin-top:6px;display:none}
+  .notes-area .saved.show{display:block}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;
+    font-family:inherit;font-size:14px;font-weight:600;border:none;cursor:pointer;
+    transition:transform .12s, background .15s;
+  }
+  .btn:hover{background:var(--accent);transform:translateY(-1px)}
+  .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+  .btn.secondary:hover{background:var(--ink);color:#fff}
+
+  .mark-done-row{
+    margin-top:24px;padding-top:20px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .mark-done-row .status-tag{
+    font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;
+  }
+  .mark-done-row .status-tag.done{color:var(--ok)}
+
+  /* ---------- Start / Hero ---------- */
+  .hero{
+    padding:32px 0 12px;
+  }
+  .hero .kicker{
+    font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);margin-bottom:14px;font-weight:500;
+  }
+  .hero-stats{
+    display:flex;gap:32px;margin-top:36px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .hero-stat .num{
+    font-family:var(--font-display);font-size:34px;font-weight:600;color:var(--ink);line-height:1;
+  }
+  .hero-stat .lbl{
+    font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;
+  }
+
+  .hidden{display:none !important}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .app{grid-template-columns:1fr}
+    aside.sidebar{position:relative;height:auto;width:100%}
+    main.content{padding:32px 22px 60px}
+    h1.page-title{font-size:38px}
+    h2.section-title{font-size:26px}
+    .module-overview-grid{grid-template-columns:1fr}
+    .key-points{grid-template-columns:1fr}
+    .hero-stats{flex-wrap:wrap;gap:18px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="brand-name">Sales Academy</div>
+        <div class="brand-sub">Onboarding · B2B</div>
+      </div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label">Dein Fortschritt</div>
+      <div class="progress-bar"><div class="progress-fill" id="globalProgressFill"></div></div>
+      <div class="progress-pct" id="globalProgressPct">0% abgeschlossen</div>
+    </div>
+
+    <div class="nav-section-title">Übersicht</div>
+    <ul class="nav-list">
+      <li class="nav-item active" data-target="page-start"><span class="dot"></span><span class="lbl-num">00</span> Startseite</li>
+    </ul>
+
+    <div class="nav-section-title">Module</div>
+    <ul class="nav-list" id="moduleNav">
+      <!-- gefüllt durch JS -->
+    </ul>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="content">
+
+    <!-- ====== STARTSEITE ====== -->
+    <section id="page-start" class="page">
+      <div class="crumb">Willkommen</div>
+      <div class="hero">
+        <div class="kicker">Sales Onboarding · 6 Module</div>
+        <h1 class="page-title">Vom <em>Sales-Einsteiger</em> zum souveränen B2B-Verkäufer.</h1>
+        <p class="page-lede">
+          Dieses Training bringt dir das B2B-Sales-Handwerk strukturiert bei: vom ersten Verständnis des Sales Cycles über Prospecting und Cold Outreach bis hin zu Discovery, Abschluss und Account Management. Du gehst in deinem eigenen Tempo durch. Jedes Modul endet mit einem Knowledge Check.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">6</div><div class="lbl">Module</div></div>
+          <div class="hero-stat"><div class="num">18</div><div class="lbl">Kurse</div></div>
+          <div class="hero-stat"><div class="num">~9h</div><div class="lbl">Lernzeit</div></div>
+          <div class="hero-stat"><div class="num" id="statDone">0</div><div class="lbl">Abgeschlossen</div></div>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:48px">Wie du das Training nutzt</h2>
+      <div class="panel">
+        <ul>
+          <li><strong>Linear oder modular:</strong> Du kannst alles der Reihe nach durchgehen oder gezielt einsteigen.</li>
+          <li><strong>Quizzes & Übungen:</strong> Jeder Kurs hat einen Knowledge Check und eine kurze Praxisübung.</li>
+          <li><strong>Notizen & Checklisten:</strong> In jedem Kurs kannst du persönliche Notizen speichern.</li>
+          <li><strong>Fortschritt:</strong> Wird automatisch lokal gespeichert. Markiere Kurse als „erledigt", wenn du sie durchhast.</li>
+        </ul>
+      </div>
+
+      <h2 class="section-title" style="margin-top:48px">Module im Überblick</h2>
+      <div class="module-overview-grid" id="moduleGrid"><!-- gefüllt durch JS --></div>
+    </section>
+
+    <!-- ====== MODUL 1 ====== -->
+    <section id="page-module-1" class="page hidden">
+      <div class="crumb">Modul 1 · Grundlagen</div>
+      <div class="module-header">
+        <h1 class="page-title">Sales Grundlagen & <em>Prospecting</em></h1>
+        <p class="page-lede">Bevor du verkaufst, musst du wissen, an wen, warum und in welcher Phase. In diesem Modul lernst du die Mechanik des B2B-Vertriebs kennen, definierst dein Zielsegment und baust den Muskel für sauberes Prospecting auf.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du erklärst die Phasen des B2B Sales Cycles und die Rollen darin</li>
+            <li>Du definierst einen ICP und mindestens eine Buyer Persona</li>
+            <li>Du führst strukturiertes Prospecting mit sauberer CRM-Hygiene durch</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="1">
+
+        <!-- KURS 1.1 -->
+        <div class="acc-item" data-course="1.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">1.1</span>
+            <span class="acc-title">Sales-Grundverständnis</span>
+            <span class="acc-status">~25 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du benennst die sieben Phasen des B2B Sales Cycles in richtiger Reihenfolge</li>
+                <li>Du unterscheidest die Rollen SDR, AE, AM und CSM</li>
+                <li>Du erklärst sechs Kern-Kennzahlen (MQL, SQL, Pipeline, Conversion Rate, Win Rate, ACV)</li>
+              </ul>
+            </div>
+
+            <h4>Was B2B-Vertrieb wirklich heißt</h4>
+            <p>Im B2B-Vertrieb verkaufst du nicht an Privatpersonen, sondern an Unternehmen. Das klingt banal, hat aber massive Folgen: Deals sind komplexer, dauern länger (oft 1–9 Monate) und involvieren mehrere Personen mit unterschiedlichen Interessen. Du verkaufst rational, du verkaufst Risiko-reduzierend, und du verkaufst über mehrere Touchpoints.</p>
+
+            <h4>Der B2B Sales Cycle in 7 Phasen</h4>
+            <table class="tbl">
+              <thead><tr><th>Phase</th><th>Was passiert</th><th>Wer ist primär aktiv</th></tr></thead>
+              <tbody>
+                <tr><td>1. Prospecting</td><td>Zielfirmen & Ansprechpartner identifizieren</td><td>SDR</td></tr>
+                <tr><td>2. Outreach</td><td>Erstkontakt per Mail, Telefon, LinkedIn</td><td>SDR</td></tr>
+                <tr><td>3. Discovery</td><td>Bedarf & Pain Points verstehen</td><td>AE</td></tr>
+                <tr><td>4. Demo / Präsentation</td><td>Lösung konkret zeigen</td><td>AE + SE</td></tr>
+                <tr><td>5. Proposal & Negotiation</td><td>Angebot, Preis, Konditionen</td><td>AE</td></tr>
+                <tr><td>6. Closing</td><td>Vertrag unterschrieben</td><td>AE</td></tr>
+                <tr><td>7. Handover & Expansion</td><td>Übergabe an CS, Upsell-Vorbereitung</td><td>AM / CSM</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Rollen im Vertrieb</h4>
+            <div class="key-points">
+              <div class="kp"><b>SDR — Sales Development Rep</b>Erstkontakt, Qualifizierung, Termin-Setting für den AE.</div>
+              <div class="kp"><b>AE — Account Executive</b>Führt den Deal von Discovery bis zum Vertrag. Trägt die Quote.</div>
+              <div class="kp"><b>AM — Account Manager</b>Betreut Bestandskunden, treibt Upsell und Renewal.</div>
+              <div class="kp"><b>CSM — Customer Success Manager</b>Stellt sicher, dass der Kunde das Produkt erfolgreich nutzt.</div>
+            </div>
+
+            <h4>Kennzahlen, die du kennen musst</h4>
+            <ul>
+              <li><strong>MQL</strong> — Marketing Qualified Lead. Hat Interesse gezeigt (z.B. Whitepaper geladen).</li>
+              <li><strong>SQL</strong> — Sales Qualified Lead. Vom Sales geprüft und reif für ein Gespräch.</li>
+              <li><strong>Pipeline</strong> — Summe aller offenen Deals (in € oder $).</li>
+              <li><strong>Conversion Rate</strong> — Übergang zwischen zwei Phasen (z.B. Discovery → Demo).</li>
+              <li><strong>Win Rate</strong> — Anteil der Deals, die du gewinnst (Won / Abgeschlossen).</li>
+              <li><strong>ACV</strong> — Annual Contract Value, also der jährliche Vertragswert.</li>
+              <li><strong>Sales Cycle Length</strong> — wie lange ein Deal von Discovery bis Closing dauert.</li>
+            </ul>
+
+            <div class="merksatz"><div class="quote-content">Im B2B verkaufst du an einen Menschen — aber kaufen muss eine Organisation."</div></div>
+
+            <div class="uebung">
+              <h5>Übung · 5 Min</h5>
+              <p>Ordne die folgenden Aktivitäten gedanklich der richtigen Phase des Sales Cycles zu. Schreib deine Zuordnung in das Feld unten:</p>
+              <ol>
+                <li>Discovery Call durchführen</li>
+                <li>LinkedIn Connection Request senden</li>
+                <li>Pricing-Tabelle für ein Angebot vorbereiten</li>
+                <li>Upsell-Gespräch mit Bestandskunden</li>
+                <li>Erste Bedarfsanalyse-Frage stellen</li>
+              </ol>
+              <textarea placeholder="Deine Zuordnung..." data-store="ex-1.1"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-1.1">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Welche Rolle ist primär für das Closing eines Deals verantwortlich?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="SDRs übernehmen die Erst-Qualifizierung, nicht das Closing."><span class="opt-letter">A</span>SDR</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Der AE führt den Deal bis zum Vertragsabschluss."><span class="opt-letter">B</span>AE</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="AMs betreuen Bestandskunden, sie schließen keine Neukunden-Deals."><span class="opt-letter">C</span>AM</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="CSMs sind für die Nutzung nach Vertrag verantwortlich."><span class="opt-letter">D</span>CSM</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Was bedeutet MQL?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Nein — das wäre kein etablierter Begriff."><span class="opt-letter">A</span>Multi Qualified Lead</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Ein Lead, der durch Marketing-Aktivitäten qualifiziert wurde."><span class="opt-letter">B</span>Marketing Qualified Lead</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Nein, „Manual" ist kein Standardbegriff im Sales."><span class="opt-letter">C</span>Manual Qualified Lead</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Welche Phase folgt direkt auf Discovery?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Prospecting steht ganz am Anfang."><span class="opt-letter">A</span>Prospecting</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Nach Discovery folgt die Demo/Präsentation der Lösung."><span class="opt-letter">B</span>Demo / Präsentation</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Closing kommt erst nach Proposal & Negotiation."><span class="opt-letter">C</span>Closing</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Handover passiert nach Closing."><span class="opt-letter">D</span>Handover</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Was misst die Win Rate?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre eher die Conversion Rate."><span class="opt-letter">A</span>Wie viele Leads zu SQLs werden</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Win Rate = gewonnene Deals / alle abgeschlossenen Deals."><span class="opt-letter">B</span>Anteil gewonnener vs. abgeschlossener Deals</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre die Sales Cycle Length."><span class="opt-letter">C</span>Wie lange ein Deal dauert</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Wer ist primär für Renewals und Upsell bei Bestandskunden verantwortlich?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="SDRs arbeiten am Top of Funnel, nicht im Bestand."><span class="opt-letter">A</span>SDR</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="AEs fokussieren auf Neukunden-Closing."><span class="opt-letter">B</span>AE</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. AM (und teils CSM) übernehmen Renewal und Expansion."><span class="opt-letter">C</span>AM / CSM</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-1.1" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="1.1">offen</span></span>
+              <button class="btn" onclick="markDone('1.1', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KURS 1.2 -->
+        <div class="acc-item" data-course="1.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">1.2</span>
+            <span class="acc-title">ICP & Buyer Personas</span>
+            <span class="acc-status">~30 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du definierst einen Ideal Customer Profile (ICP) anhand mindestens fünf Kriterien</li>
+                <li>Du erstellst eine Buyer Persona mit Pains, Goals, KPIs und Einwänden</li>
+                <li>Du benennst die sechs typischen Rollen im Buying Center</li>
+              </ul>
+            </div>
+
+            <h4>ICP — wer ist der „ideale" Kunde?</h4>
+            <p>Der <strong>Ideal Customer Profile (ICP)</strong> beschreibt das <em>Unternehmen</em>, das aus deinem Produkt den größten Nutzen zieht und gleichzeitig profitabel zu verkaufen ist. Wichtig: Ein ICP ist <strong>keine Person</strong> — es ist eine Firmenart.</p>
+
+            <h5>Typische ICP-Kriterien</h5>
+            <div class="key-points">
+              <div class="kp"><b>Branche</b>z.B. SaaS, Industrie, Logistik, FinServ</div>
+              <div class="kp"><b>Unternehmensgröße</b>Mitarbeiter, Umsatz, Anzahl Sales Reps</div>
+              <div class="kp"><b>Region / Markt</b>DACH, EU, Nordamerika</div>
+              <div class="kp"><b>Tech Stack</b>Welche Tools nutzt das Unternehmen bereits</div>
+              <div class="kp"><b>Wachstumsphase</b>Seed, Series B, Mid-Market, Enterprise</div>
+              <div class="kp"><b>Trigger Events</b>Funding, neuer CRO, Expansion, M&A</div>
+            </div>
+
+            <h4>Buyer Personas — wer ist der Mensch dahinter?</h4>
+            <p>Während der ICP die Firma beschreibt, beschreibt eine <strong>Buyer Persona</strong> die konkrete Person, mit der du sprichst. Pro ICP gibt es meist drei bis fünf relevante Personas.</p>
+
+            <h5>Bestandteile einer guten Persona</h5>
+            <ul>
+              <li><strong>Jobtitel & Seniorität</strong> — z.B. Head of Sales Operations</li>
+              <li><strong>KPIs, an denen sie gemessen wird</strong> — z.B. Forecast Accuracy</li>
+              <li><strong>Pain Points</strong> — was nervt sie täglich?</li>
+              <li><strong>Goals / Motivation</strong> — was will sie erreichen?</li>
+              <li><strong>Kanäle</strong> — wo informiert sie sich (LinkedIn, Newsletter, Communities)?</li>
+              <li><strong>Typische Einwände</strong> — was sagt sie gegen dein Angebot?</li>
+            </ul>
+
+            <div class="example good">
+              <h6>Beispiel-Persona „Sarah, Head of Sales Ops"</h6>
+              <strong>Firma:</strong> Mid-Market SaaS, 150–500 MA<br>
+              <strong>KPIs:</strong> Pipeline Velocity, Forecast Accuracy<br>
+              <strong>Pains:</strong> Schlechte CRM-Daten, manueller Reporting-Aufwand, fehlende Forecast-Verlässlichkeit<br>
+              <strong>Goals:</strong> Sales-Team in Reporting entlasten, Datenqualität steigern, klares Pipeline-Bild<br>
+              <strong>Kanäle:</strong> LinkedIn, Sales-Ops-Communities, Newsletter (Pavilion, RevOps Co-op)<br>
+              <strong>Einwände:</strong> „Wir nutzen schon X", „Implementation ist zu komplex", „Kein Budget bis Q2"
+            </div>
+
+            <h4>Das Buying Center</h4>
+            <p>Im B2B kauft selten eine einzelne Person — du sprichst mit einer Gruppe von Menschen mit verschiedenen Rollen. Dieses Konstrukt nennt man <strong>Buying Center</strong>.</p>
+            <table class="tbl">
+              <thead><tr><th>Rolle</th><th>Was sie tut</th></tr></thead>
+              <tbody>
+                <tr><td>Champion</td><td>Interner Fürsprecher, will dein Produkt — dein wichtigster Verbündeter.</td></tr>
+                <tr><td>Decision Maker</td><td>Trifft die finale Entscheidung — oft Director oder C-Level.</td></tr>
+                <tr><td>Economic Buyer</td><td>Hält das Budget. Manchmal identisch mit Decision Maker.</td></tr>
+                <tr><td>User</td><td>Nutzt das Produkt im Alltag. Ihre Akzeptanz ist entscheidend.</td></tr>
+                <tr><td>Influencer</td><td>Hat fachliches Gewicht (z.B. IT-Architektur, Daten-Lead).</td></tr>
+                <tr><td>Blocker / Gatekeeper</td><td>Kann den Deal stoppen (Legal, Procurement, IT-Security).</td></tr>
+              </tbody>
+            </table>
+
+            <div class="merksatz"><div class="quote-content">Kein Champion, kein Deal. Ein ICP ist eine Firma — eine Persona ist ein Mensch."</div></div>
+
+            <div class="uebung">
+              <h5>Übung · 10 Min</h5>
+              <p>Wähle ein Zielsegment, das zu eurem Produkt passt, und schreibe eine Mini-Persona:</p>
+              <ul>
+                <li>Jobtitel</li>
+                <li>3 Pain Points</li>
+                <li>3 Goals</li>
+                <li>1 KPI, an der sie gemessen wird</li>
+                <li>1 typischer Einwand</li>
+              </ul>
+              <textarea placeholder="Deine Mini-Persona..." data-store="ex-1.2"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-1.2">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Was ist der Hauptunterschied zwischen ICP und Buyer Persona?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Es geht nicht um Größe, sondern um die Ebene: Firma vs. Person."><span class="opt-letter">A</span>ICP ist größer als die Persona</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. ICP beschreibt das Unternehmen, Persona die konkrete Person."><span class="opt-letter">B</span>ICP = Firmenart, Persona = Mensch</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Beides ist im B2B-Vertrieb essenziell, eines schließt das andere nicht aus."><span class="opt-letter">C</span>Personas sind wichtiger als der ICP</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Welche Rolle im Buying Center hält das Budget?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Der Champion ist ein interner Fürsprecher, hält aber typischerweise kein Budget."><span class="opt-letter">A</span>Champion</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Der Economic Buyer hält das Budget."><span class="opt-letter">B</span>Economic Buyer</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="User nutzen das Produkt, halten aber kein Budget."><span class="opt-letter">C</span>User</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Influencer geben fachliche Empfehlungen, kein Budget."><span class="opt-letter">D</span>Influencer</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Was ist ein Trigger Event?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre nur ein interner CRM-Status."><span class="opt-letter">A</span>Ein automatischer CRM-Eintrag</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Ein Ereignis im Zielunternehmen, das Kaufbereitschaft signalisieren kann."><span class="opt-letter">B</span>Ein Ereignis im Unternehmen, das Outreach besonders relevant macht</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Nein, das wäre ein Disqualifier."><span class="opt-letter">C</span>Ein Grund, einen Lead aus der Pipeline zu entfernen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Welche Rolle kann einen Deal stoppen, ohne ihn aktiv zu kaufen?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Der Champion treibt den Deal aktiv voran."><span class="opt-letter">A</span>Champion</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Blocker (Legal, IT-Security, Procurement) können einen Deal verhindern."><span class="opt-letter">B</span>Blocker / Gatekeeper</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="User können Akzeptanzprobleme haben, stoppen aber selten direkt."><span class="opt-letter">C</span>User</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Welche der folgenden Aussagen passt am besten als ICP-Kriterium?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das ist eine Persona-Eigenschaft, kein ICP-Kriterium."><span class="opt-letter">A</span>„Person ist 35 Jahre alt"</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Das ist ein klassisches firmographisches ICP-Kriterium."><span class="opt-letter">B</span>„Mid-Market SaaS-Firma mit 150–500 Mitarbeitern in DACH"</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das beschreibt eine konkrete Person, also eine Persona."><span class="opt-letter">C</span>„Head of Sales bei einem Logistik-Unternehmen"</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-1.2" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="1.2">offen</span></span>
+              <button class="btn" onclick="markDone('1.2', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KURS 1.3 -->
+        <div class="acc-item" data-course="1.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">1.3</span>
+            <span class="acc-title">Prospecting, Recherche & CRM</span>
+            <span class="acc-status">~35 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du strukturierst Prospecting als wiederholbaren 5-Schritte-Prozess</li>
+                <li>Du nutzt mindestens vier Recherche-Quellen für Account- und Personenrecherche</li>
+                <li>Du wendest fünf konkrete CRM-Hygiene-Regeln im Alltag an</li>
+              </ul>
+            </div>
+
+            <h4>Prospecting Workflow — wiederholbar in 5 Schritten</h4>
+            <ol>
+              <li><strong>Account-Liste bauen</strong> — basierend auf deinem ICP. Z.B. 20–40 Accounts pro Woche.</li>
+              <li><strong>Personas identifizieren</strong> — pro Account 1–3 Ansprechpartner (Sales Nav, Apollo, Cognism, Lusha).</li>
+              <li><strong>Recherche</strong> — 5–10 Minuten pro Account, fokussiert auf Trigger Events und Pain-Hypothese.</li>
+              <li><strong>Cadence starten</strong> — strukturierte Sequence aus Mail, Call, LinkedIn.</li>
+              <li><strong>CRM dokumentieren</strong> — sofort, nicht „später".</li>
+            </ol>
+
+            <h4>Recherche-Quellen, die wirklich helfen</h4>
+            <div class="key-points">
+              <div class="kp"><b>LinkedIn</b>Posts, Aktivitäten, Jobwechsel, Kommentare</div>
+              <div class="kp"><b>Unternehmenswebsite</b>News, Pressebereich, Karriereseite</div>
+              <div class="kp"><b>Crunchbase / Pitchbook</b>Funding-Runden, Investoren</div>
+              <div class="kp"><b>Stellenanzeigen</b>Zeigen Wachstum, Lücken, Tech Stack</div>
+              <div class="kp"><b>Earnings Calls / Reports</b>Vor allem für Enterprise relevant</div>
+              <div class="kp"><b>Branchenmedien</b>Newsletter, Podcasts, Fachpresse</div>
+            </div>
+
+            <h4>Trigger Events — was ist ein guter Aufhänger?</h4>
+            <ul>
+              <li>Neue <strong>Funding-Runde</strong> (Series A/B/C) — Budget vorhanden, Skalierungsdruck.</li>
+              <li><strong>Führungswechsel</strong> (neuer CRO, VP Sales, Head of RevOps) — neue Person, neue Prioritäten.</li>
+              <li><strong>Stellenanzeigen</strong> in deinem Funktionsbereich — zeigen Lücken und Bedürfnisse.</li>
+              <li><strong>Produkt-Launches</strong> oder Expansion in neue Märkte.</li>
+              <li><strong>M&A-Aktivität</strong> — Integration schafft neuen Bedarf.</li>
+              <li><strong>Auffällige LinkedIn-Posts</strong> zu Pain-Themen deiner Lösung.</li>
+            </ul>
+
+            <h4>CRM-Hygiene — die Disziplin, die Reps von Profis unterscheidet</h4>
+            <div class="example good">
+              <h6>Do</h6>
+              <ul>
+                <li>Nach jedem Call und jeder Mail das CRM aktualisieren — innerhalb von 24h</li>
+                <li>Klare Stage-Zuordnung (Discovery, Demo, Proposal …) — keine Phantasie-Stufen</li>
+                <li>Jeder Deal hat einen „Next Step" mit konkretem Datum</li>
+                <li>Notizen sind kurz, faktisch und in dritter Person verständlich</li>
+                <li>Pflichtfelder vollständig ausfüllen (Industry, Size, Source, ICP-Fit)</li>
+              </ul>
+            </div>
+            <div class="example bad">
+              <h6>Don't</h6>
+              <ul>
+                <li>Duplicates anlegen, weil der Kontakt schon existiert hat — vorher suchen</li>
+                <li>Daten nur „im Kopf" oder in deinem privaten Notizbuch halten</li>
+                <li>Notizen wie „nettes Gespräch" — sagt nichts</li>
+                <li>Stages willkürlich verschieben, um die Pipeline aufzublasen</li>
+                <li>Nach Urlaub erst CRM-Backlog von 2 Wochen aufholen</li>
+              </ul>
+            </div>
+
+            <div class="merksatz"><div class="quote-content">Wenn's nicht im CRM steht, ist es nicht passiert. 10 Minuten Recherche sparen dir 30 Minuten Outreach."</div></div>
+
+            <h5>Prospecting-Tagescheckliste (zum Abhaken)</h5>
+            <div class="check-list" data-list="cl-1.3">
+              <label><input type="checkbox" data-id="cl-1.3-1"> 20 neue Accounts gegen ICP geprüft</label>
+              <label><input type="checkbox" data-id="cl-1.3-2"> Personas pro Account identifiziert (1–3)</label>
+              <label><input type="checkbox" data-id="cl-1.3-3"> Pro Account: 1 Trigger Event + 1 Pain-Hypothese notiert</label>
+              <label><input type="checkbox" data-id="cl-1.3-4"> Cadence im Sales-Engagement-Tool gestartet</label>
+              <label><input type="checkbox" data-id="cl-1.3-5"> CRM aktualisiert (Stage + Next Step mit Datum)</label>
+              <label><input type="checkbox" data-id="cl-1.3-6"> 2 Follow-ups vom Vortag erledigt</label>
+            </div>
+
+            <div class="uebung">
+              <h5>Übung · 10 Min</h5>
+              <p>Such dir einen realen Account aus deinem Markt und recherchiere ihn in 10 Minuten. Notiere unten:</p>
+              <ul>
+                <li>1 Trigger Event (was ist gerade los?)</li>
+                <li>1 mögliche Persona (Jobtitel + Name, wenn auffindbar)</li>
+                <li>1 hypothetischer Pain Point</li>
+                <li>1 Aufhänger für die erste Mail (max. 1 Satz)</li>
+              </ul>
+              <textarea placeholder="Deine Recherche..." data-store="ex-1.3"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-1.3">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Wie viel Zeit ist eine sinnvolle Recherchedauer pro Account vor dem ersten Outreach?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu kurz — du wirst nicht genug Personalisierung finden."><span class="opt-letter">A</span>30 Sekunden</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. 5–10 Minuten geben dir genug Substanz, ohne in Recherche zu versinken."><span class="opt-letter">B</span>5–10 Minuten</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu lang — du brauchst Schlagzahl. Recherche darf den Output nicht ausbremsen."><span class="opt-letter">C</span>45 Minuten</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Welche dieser Informationen ist <em>kein</em> Trigger Event?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Doch — eine Funding-Runde ist ein klassischer Trigger."><span class="opt-letter">A</span>Neue Series-B-Funding</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Doch — eine neue Führungskraft setzt oft neue Prioritäten."><span class="opt-letter">B</span>Neuer CRO im Unternehmen</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Der Geburtstag des CEOs ist privat und kein Sales-Trigger."><span class="opt-letter">C</span>Geburtstag des CEOs</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Doch — Stellenanzeigen zeigen Lücken und Wachstum."><span class="opt-letter">D</span>Stellenanzeige für „RevOps Manager"</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Welche der folgenden Notizen gehört <em>nicht</em> ins CRM?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Klar definierter Next Step — gehört unbedingt rein."><span class="opt-letter">A</span>„Next Step: Demo am 14.05.2026 mit Marc + Anna"</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Solche Notizen sind subjektiv und nicht handlungsrelevant."><span class="opt-letter">B</span>„War ein nettes Gespräch"</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Konkreter Pain — sehr nützlich."><span class="opt-letter">C</span>„Pain: Forecast Accuracy unter 60%"</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Welche Quelle eignet sich besonders gut, um den Tech Stack einer Firma einzuschätzen?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Twitter/X zeigt selten harte Tech-Stack-Infos."><span class="opt-letter">A</span>Twitter / X</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Stellenanzeigen verraten oft konkrete Tools und Plattformen."><span class="opt-letter">B</span>Stellenanzeigen</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Instagram ist im B2B-Tech-Kontext meist irrelevant."><span class="opt-letter">C</span>Instagram</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Was ist ein „Next Step" im CRM?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre eine offene Aufgabe ohne Verbindlichkeit."><span class="opt-letter">A</span>Ein Hinweis an dich selbst, irgendwann nachzufassen</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Der nächste konkret geplante Schritt mit Datum (z.B. „Demo am 14.05.")."><span class="opt-letter">B</span>Der konkret geplante Folgeschritt mit Datum</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre eine Phase, nicht ein Next Step."><span class="opt-letter">C</span>Der Status des Deals (z.B. Discovery)</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-1.3" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="1.3">offen</span></span>
+              <button class="btn" onclick="markDone('1.3', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== MODUL 2 ====== -->
+    <section id="page-module-2" class="page hidden">
+      <div class="crumb">Modul 2 · Kommunikation</div>
+      <div class="module-header">
+        <h1 class="page-title">Cold Outreach & <em>Kommunikation</em></h1>
+        <p class="page-lede">Outreach entscheidet, ob du ein Gespräch bekommst oder nicht. In diesem Modul lernst du, wie du wirksame Mails schreibst, am Telefon souverän auftrittst und LinkedIn richtig einsetzt — ohne als Spam wahrgenommen zu werden.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du beschreibst die drei Prinzipien guter Cold-Outreach-Kommunikation</li>
+            <li>Du schreibst eine personalisierte Cold Mail nach klarer Struktur in unter 120 Wörtern</li>
+            <li>Du eröffnest einen Cold Call, nutzt LinkedIn werthaltig und folgst strukturiert nach</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="2">
+
+        <!-- KURS 2.1 -->
+        <div class="acc-item" data-course="2.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">2.1</span>
+            <span class="acc-title">Cold Outreach Grundlagen</span>
+            <span class="acc-status">~25 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du benennst die drei Kern-Prinzipien guter Cold-Outreach-Kommunikation</li>
+                <li>Du unterscheidest klar zwischen Spam und relevantem Outreach</li>
+                <li>Du baust eine Multi-Channel-Cadence über 14–21 Tage</li>
+              </ul>
+            </div>
+
+            <h4>Was Cold Outreach wirklich ist — und was es nicht ist</h4>
+            <p>Cold Outreach ist Kontakt zu Personen, die dich oder deine Firma noch nicht kennen. <strong>Ziel ist nicht der Verkauf</strong>, sondern ein erstes Gespräch (Discovery Call). Wer das verwechselt, schreibt Mails, die wie Werbeflyer klingen — und genau diese landen im Papierkorb.</p>
+
+            <h4>Die 3 Prinzipien guter Outreach</h4>
+            <div class="key-points">
+              <div class="kp"><b>1. Relevanz vor Volumen</b>30 personalisierte Mails schlagen 300 Mass-Mails. Immer.</div>
+              <div class="kp"><b>2. Wert vor Pitch</b>Erst Insight, Beobachtung, Frage — dann erst (vielleicht) die Lösung.</div>
+              <div class="kp"><b>3. Klarheit vor Cleverness</b>Direkte Sprache schlägt clevere Wortspiele. Niemand entschlüsselt Wortwitze.</div>
+            </div>
+
+            <h4>Was ist eine Cadence?</h4>
+            <p>Eine <strong>Cadence</strong> (auch Sequence) ist eine geplante Abfolge von Kontaktpunkten über mehrere Kanäle und Tage. Sie sorgt dafür, dass du dranbleibst — ohne lästig zu werden.</p>
+
+            <table class="tbl">
+              <thead><tr><th>Tag</th><th>Kanal & Aktion</th></tr></thead>
+              <tbody>
+                <tr><td>Tag 1</td><td>E-Mail 1 — kurz, mit Trigger als Hook</td></tr>
+                <tr><td>Tag 2</td><td>LinkedIn — Profil-View + Connect-Request (ohne Pitch)</td></tr>
+                <tr><td>Tag 4</td><td>E-Mail 2 — Value Add (Insight, Case Study, kurze Statistik)</td></tr>
+                <tr><td>Tag 6</td><td>Telefonanruf #1</td></tr>
+                <tr><td>Tag 9</td><td>LinkedIn — Voice Message oder kurzer Kommentar zu Post</td></tr>
+                <tr><td>Tag 12</td><td>E-Mail 3 — Break-up Mail („soll ich das Thema ruhen lassen?")</td></tr>
+                <tr><td>Tag 15</td><td>Telefonanruf #2</td></tr>
+                <tr><td>Tag 21</td><td>Letzte Mail oder Pause für 2–3 Monate</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Spam vs. relevant — der Unterschied</h4>
+            <div class="example bad">
+              <h6>Spam</h6>
+              „Hi {{Vorname}}, wir helfen Firmen wie eurer, mehr Umsatz zu generieren. Habt ihr 15 Minuten nächste Woche?"
+            </div>
+            <div class="example good">
+              <h6>Relevanter Outreach</h6>
+              „Hallo Anna, du hast in deinem Post letzte Woche geschrieben, dass dein Team durch manuelles Reporting bremst. Bei drei vergleichbaren SaaS-Teams haben wir genau diesen Aufwand halbiert. Lohnt sich ein 15-Min-Check?"
+            </div>
+
+            <div class="merksatz"><div class="quote-content">Cold Outreach verkauft kein Produkt — es verkauft ein Gespräch. Wenn deine Mail an jeden gehen könnte, geht sie an niemanden."</div></div>
+
+            <div class="uebung">
+              <h5>Übung · 5 Min</h5>
+              <p>Bewerte die folgende Mail-Eröffnung. Was würdest du verbessern? Notiere drei konkrete Punkte:</p>
+              <div class="example">
+                „Hi Max, ich hoffe, du hast eine gute Woche. Ich wollte mich kurz vorstellen: Ich bin von Acme und wir machen revolutionäre KI-Lösungen für moderne Unternehmen. Lass uns gerne mal reden!"
+              </div>
+              <textarea placeholder="Deine Verbesserungsvorschläge..." data-store="ex-2.1"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-2.1">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Was ist das eigentliche Ziel von Cold Outreach?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Nein — direkter Verkauf scheitert in Cold Outreach fast immer."><span class="opt-letter">A</span>Direkt verkaufen</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Ziel ist ein erstes Gespräch (Discovery Call)."><span class="opt-letter">B</span>Ein erstes Gespräch bekommen</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Markenpräsenz ist Aufgabe von Marketing, nicht Sales."><span class="opt-letter">C</span>Markenbekanntheit aufbauen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Was ist eine Cadence?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre nur ein Touchpoint, keine Cadence."><span class="opt-letter">A</span>Eine einzelne, sehr lange Mail</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Eine geplante Sequence über mehrere Kanäle und Tage."><span class="opt-letter">B</span>Eine geplante Sequence von Kontakten über mehrere Kanäle</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das wäre nur eine ToDo-Liste, ohne Struktur über die Zeit."><span class="opt-letter">C</span>Eine Liste mit zu kontaktierenden Personen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Welche Aussage entspricht dem Prinzip „Wert vor Pitch"?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Das ist klassischer Feature-Pitch, kein Wert."><span class="opt-letter">A</span>„Unsere Plattform hat über 200 Features"</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Du startest mit einem Insight, der zu ihrem Kontext passt."><span class="opt-letter">B</span>„Sales-Ops-Leads in mid-market SaaS sehen aktuell genau dieses Forecast-Problem"</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das ist Höflichkeits-Floskel, kein Wert."><span class="opt-letter">C</span>„Ich hoffe, du hast eine gute Woche"</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Über wie viele Tage geht eine typische Cadence?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu kurz — du wirst kaum Reaktionen bekommen."><span class="opt-letter">A</span>2–3 Tage</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. 14–21 Tage mit 7–12 Touchpoints sind ein sinnvoller Standard."><span class="opt-letter">B</span>14–21 Tage</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu lang — du verlierst die Aufmerksamkeit."><span class="opt-letter">C</span>3–4 Monate</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Welches Prinzip beschreibt „30 personalisierte Mails > 300 Mass-Mails" am besten?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Relevanz vor Volumen ist das Kernprinzip."><span class="opt-letter">A</span>Relevanz vor Volumen</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das ist ein anderes Prinzip — bezieht sich auf Sprachstil."><span class="opt-letter">B</span>Klarheit vor Cleverness</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Wert vor Pitch geht es um Inhalt der Botschaft, nicht um Quantität."><span class="opt-letter">C</span>Wert vor Pitch</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-2.1" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="2.1">offen</span></span>
+              <button class="btn" onclick="markDone('2.1', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KURS 2.2 -->
+        <div class="acc-item" data-course="2.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">2.2</span>
+            <span class="acc-title">E-Mail-Strategie & Personalisierung</span>
+            <span class="acc-status">~30 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du beschreibst die fünf Bausteine einer Cold E-Mail</li>
+                <li>Du wendest die drei Ebenen der Personalisierung gezielt an</li>
+                <li>Du formulierst klare CTAs und schreibst Mails unter 120 Wörtern</li>
+              </ul>
+            </div>
+
+            <h4>Die Struktur einer wirksamen Cold E-Mail</h4>
+            <ol>
+              <li><strong>Betreffzeile</strong> — 3–5 Wörter, neutral, persönlich klingend. Keine Spam-Trigger.</li>
+              <li><strong>Eröffnung</strong> — Hook mit Personalisierung (Trigger, Post, News).</li>
+              <li><strong>Brücke</strong> — Verbindung zwischen Hook und einem relevanten Pain.</li>
+              <li><strong>Value Proposition</strong> — Eine konkrete, möglichst messbare Aussage.</li>
+              <li><strong>CTA</strong> — EINE klare, kleine Frage. Niemals drei.</li>
+            </ol>
+
+            <h4>Drei Ebenen der Personalisierung</h4>
+            <table class="tbl">
+              <thead><tr><th>Ebene</th><th>Beispiel</th><th>Wirkung</th></tr></thead>
+              <tbody>
+                <tr><td>1 · Industry/Persona</td><td>„Sales-Ops-Leads in SaaS kennen das Problem…"</td><td>niedrig</td></tr>
+                <tr><td>2 · Company</td><td>„Bei euch in München, mit dem Wachstum nach Series B…"</td><td>mittel</td></tr>
+                <tr><td>3 · Individual</td><td>„Dein LinkedIn-Post zu Forecast Accuracy letzte Woche…"</td><td>hoch</td></tr>
+              </tbody>
+            </table>
+            <p>Ziel ist <strong>Ebene 3</strong>, mindestens aber Ebene 2 — kombiniert mit Pain-Bezug.</p>
+
+            <h4>Eine vollständige Beispiel-Mail</h4>
+            <div class="example good">
+              <h6>Cold Mail — 98 Wörter</h6>
+              <strong>Betreff:</strong> Frage zu eurem Sales-Stack<br><br>
+              Hallo Anna,<br><br>
+              dein Post letzte Woche zu manuellem Forecasting hat mich angesprochen — wir hören das aktuell oft bei Sales-Ops-Leads in mid-market SaaS.<br><br>
+              Drei vergleichbare Teams (z.B. {Beispielfirma}) haben mit uns ihren Forecast-Aufwand um rund 50% gesenkt und gleichzeitig die Accuracy verbessert.<br><br>
+              Lohnt sich ein 15-Min-Call nächste Woche — Dienstag 14:30 oder Donnerstag 10:00?<br><br>
+              Viele Grüße<br>
+              Lisa
+            </div>
+
+            <h4>Häufige Fehler — und wie du sie vermeidest</h4>
+            <ul>
+              <li><strong>Mehr als 120 Wörter</strong> — niemand liest das auf dem Handy.</li>
+              <li><strong>Drei CTAs in einer Mail</strong> — Entscheidung wird vermieden.</li>
+              <li><strong>„Ich hoffe, du hast eine schöne Woche…"</strong> — verschwendete erste Zeile.</li>
+              <li><strong>Lange Firmenvorstellung</strong> — interessiert niemanden.</li>
+              <li><strong>Buzzwords ohne Beleg</strong> — „revolutionär", „AI-powered", „disruptiv".</li>
+            </ul>
+
+            <h4>CTAs richtig formulieren</h4>
+            <div class="example bad"><h6>Schwach</h6>„Können wir vielleicht mal telefonieren?"</div>
+            <div class="example good"><h6>Konkret</h6>„Hast du Dienstag 14:30 oder Donnerstag 10:00 15 Minuten?"</div>
+            <div class="example good"><h6>Sanft & qualifizierend</h6>„Ist das ein Thema, das gerade Priorität hat — oder eher Q1?"</div>
+
+            <div class="merksatz"><div class="quote-content">Eine Cold Mail ist eine Annahme über einen Pain — keine Verkaufsbroschüre. Eine Mail = eine Idee = ein CTA."</div></div>
+
+            <h5>Cold-Mail-Checkliste vor dem Senden</h5>
+            <div class="check-list" data-list="cl-2.2">
+              <label><input type="checkbox" data-id="cl-2.2-1"> Unter 120 Wörter</label>
+              <label><input type="checkbox" data-id="cl-2.2-2"> Personalisierung auf Ebene 2 oder 3</label>
+              <label><input type="checkbox" data-id="cl-2.2-3"> Konkreter Pain genannt</label>
+              <label><input type="checkbox" data-id="cl-2.2-4"> Messbare Value Proposition</label>
+              <label><input type="checkbox" data-id="cl-2.2-5"> Genau ein CTA</label>
+              <label><input type="checkbox" data-id="cl-2.2-6"> Keine Buzzwords ohne Beleg</label>
+              <label><input type="checkbox" data-id="cl-2.2-7"> Auf Handy lesbar (max. 3 kurze Absätze)</label>
+            </div>
+
+            <div class="uebung">
+              <h5>Übung · 10 Min</h5>
+              <p>Schreibe eine Cold Mail in max. 100 Wörtern an eine fiktive Persona deines Zielmarkts. Achte auf:</p>
+              <ul>
+                <li>1 personalisierten Hook (Ebene 2 oder 3)</li>
+                <li>1 konkreten Pain-Bezug</li>
+                <li>1 messbare Wertaussage</li>
+                <li>1 klaren CTA</li>
+              </ul>
+              <textarea placeholder="Deine Cold Mail..." data-store="ex-2.2"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-2.2">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Welche Personalisierungsebene ist am wirksamsten?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Diese Ebene ist generisch und kaum besser als gar keine."><span class="opt-letter">A</span>Ebene 1 — Industry/Persona</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Besser, aber nicht das Maximum."><span class="opt-letter">B</span>Ebene 2 — Company</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Individuelle Personalisierung (z.B. konkreter LinkedIn-Post) zieht am stärksten."><span class="opt-letter">C</span>Ebene 3 — Individual</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Wie viele CTAs gehören in eine Cold Mail?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Genau einer — sonst wird keine Entscheidung getroffen."><span class="opt-letter">A</span>Genau 1</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu viele Optionen führen oft zu gar keiner Reaktion."><span class="opt-letter">B</span>2–3, damit die Person Auswahl hat</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Das überfordert."><span class="opt-letter">C</span>So viele wie möglich</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Was ist eine gute maximale Länge für eine Cold Mail?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu kurz — du transportierst keinen Wert."><span class="opt-letter">A</span>30 Wörter</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Ungefähr 100–120 Wörter passen auf einen Handy-Bildschirm."><span class="opt-letter">B</span>100–120 Wörter</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Viel zu lang — wird nicht zu Ende gelesen."><span class="opt-letter">C</span>400+ Wörter</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Welche Betreffzeile funktioniert in der Praxis besser?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Klingt wie Marketing — typischer Spam-Trigger."><span class="opt-letter">A</span>„Revolutionäre KI-Lösung exklusiv für dich"</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Persönlich, neutral, weckt Neugier."><span class="opt-letter">B</span>„Frage zu eurem Sales-Stack"</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu allgemein — wirkt wie Newsletter."><span class="opt-letter">C</span>„Wichtige Information für dein Unternehmen"</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Was ist die Hauptaufgabe einer Cold Mail?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Direktverkauf scheitert in Cold Mails fast immer."><span class="opt-letter">A</span>Den Vertrag verkaufen</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Sie weckt Aufmerksamkeit für ein erstes Gespräch."><span class="opt-letter">B</span>Aufmerksamkeit für ein erstes Gespräch wecken</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Eine Cold Mail ist kein Marketing-Asset, sondern eine direkte 1:1-Nachricht."><span class="opt-letter">C</span>Die Firma vorstellen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-2.2" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="2.2">offen</span></span>
+              <button class="btn" onclick="markDone('2.2', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KURS 2.3 -->
+        <div class="acc-item" data-course="2.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">2.3</span>
+            <span class="acc-title">Telefon, LinkedIn & Follow-up-Kommunikation</span>
+            <span class="acc-status">~35 Min</span>
+            <span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box">
+              <h5>Lernziele</h5>
+              <ul>
+                <li>Du eröffnest einen Cold Call mit einer klaren 3-Schritte-Struktur</li>
+                <li>Du nutzt LinkedIn ohne als Spam wahrgenommen zu werden</li>
+                <li>Du schreibst ein Follow-up, das echte Klarheit und einen Next Step erzeugt</li>
+              </ul>
+            </div>
+
+            <h4>Cold Call — die Eröffnung entscheidet</h4>
+            <p>Die ersten 10 Sekunden entscheiden, ob das Gespräch weitergeht oder nicht. Eine bewährte Struktur ist <strong>Direktheit + Permission</strong>:</p>
+
+            <ol>
+              <li><strong>Name + Firma + Direktheit</strong>: „Hi Anna, hier ist Lisa von Acme — kennst du uns?"</li>
+              <li><strong>Anlass</strong>: „Ich rufe an, weil…" (konkreter Grund, am besten Trigger)</li>
+              <li><strong>Permission</strong>: „Hast du 30 Sekunden, oder ist es gerade ungünstig?"</li>
+            </ol>
+
+            <div class="example good">
+              <h6>Vollständige Eröffnung</h6>
+              „Hi Anna, hier ist Lisa von Acme. Ich weiß, dass ich dich kalt erwische. Hast du 30 Sekunden für den Grund meines Anrufs — oder ist es gerade ungünstig?"
+            </div>
+
+            <h4>Drei Tipps fürs Telefon</h4>
+            <div class="key-points">
+              <div class="kp"><b>Stehen statt sitzen</b>Deine Stimme klingt energischer und präsenter.</div>
+              <div class="kp"><b>Lächeln</b>Ein Lächeln ist hörbar — auch ohne Bild.</div>
+              <div class="kp"><b>Pause aushalten</b>Nach deiner Frage nicht nachschieben. Die Pause ist eine Einladung.</div>
+            </div>
+
+            <h4>Typische Einwände am Telefon — kurz behandelt</h4>
+            <table class="tbl">
+              <thead><tr><th>Einwand</th><th>Bessere Reaktion</th></tr></thead>
+              <tbody>
+                <tr><td>„Keine Zeit"</td><td>„Verstehe. Macht 15 Sekunden Sinn, oder rufe ich nächste Woche an?"</td></tr>
+                <tr><td>„Schick mir Infos"</td><td>„Gerne — damit es relevant ist: Was ist gerade dein wichtigstes Sales-Thema?"</td></tr>
+                <tr><td>„Wir nutzen schon X"</td><td>„Spannend, was funktioniert daran besonders gut?"</td></tr>
+                <tr><td>„Kein Interesse"</td><td>„Verstanden. Falls sich {Thema} doch ändert — passe ich in 3 Monaten nochmal?"</td></tr>
+              </tbody>
+            </table>
+
+            <h4>LinkedIn — Tool, kein Megafon</h4>
+            <div class="example good">
+              <h6>Do</h6>
+              <ul>
+                <li>Mit Kontext connecten („habe deinen Post zu X gesehen")</li>
+                <li>Eigene Inhalte teilen (3–5 Posts pro Woche)</li>
+                <li>Auf persona-relevanten Themen kommentieren</li>
+                <li>Voice Notes nutzen — höhere Antwortraten als Text</li>
+                <li>Posts erst lesen, dann reagieren — nicht umgekehrt</li>
+              </ul>
+            </div>
+            <div class="example bad">
+              <h6>Don't</h6>
+              <ul>
+                <li>Pitch im Connect-Request</li>
+                <li>„Hi {{Vorname}}, wir helfen Firmen…" (klassischer Spam)</li>
+                <li>Massen-InMails ohne Personalisierung</li>
+                <li>Connect-and-Pitch innerhalb von 24 Stunden</li>
+                <li>Generische Likes ohne Lesen</li>
+              </ul>
+            </div>
+
+            <h4>Follow-up — der unterschätzte Hebel</h4>
+            <p>Gute Follow-ups sind oft wichtiger als der Erstkontakt. Sie schaffen Klarheit, Verbindlichkeit und einen klaren Next Step.</p>
+
+            <h5>Wann follow-uppen?</h5>
+            <ul>
+              <li>Nach Discovery Call: <strong>innerhalb von 24 Stunden</strong></li>
+              <li>Nach Demo: <strong>innerhalb von 24 Stunden</strong> mit klarem Next Step</li>
+              <li>Bei Schweigen: <strong>48–72 Stunden</strong> nach der letzten Mail</li>
+            </ul>
+
+            <h5>Was gehört in ein gutes Follow-up?</h5>
+            <ul>
+              <li>Kurze Zusammenfassung des Gesprächs (2–3 Bullets)</li>
+              <li>Genannte Pains/Goals in <em>ihren</em> Worten — nicht in deinen</li>
+              <li>Vereinbarter Next Step mit konkretem Datum</li>
+              <li>Optional: ein hilfreiches Asset (Case Study, Artikel) — nur wenn es wirklich passt</li>
+            </ul>
+
+            <div class="example good">
+              <h6>Beispiel-Follow-up nach Discovery</h6>
+              Hallo Anna,<br><br>
+              danke für den Call. Was ich mitgenommen habe:<br>
+              • Forecast-Accuracy aktuell unter 60% — Ziel: über 80%<br>
+              • Drei Tools im Stack, kaum saubere Datenflüsse<br>
+              • Q1 ist Entscheidungsfenster fürs Budget<br><br>
+              Wie besprochen ist der nächste Schritt eine 30-Min-Demo mit deinem RevOps-Kollegen Marc. Ich schlage Dienstag 10:00 oder Donnerstag 14:00 vor.<br><br>
+              Viele Grüße<br>
+              Lisa
+            </div>
+
+            <div class="merksatz"><div class="quote-content">Am Telefon ist eine Pause kein Loch — sie ist eine Einladung zur Antwort. Ein gutes Follow-up hat keinen Pitch — es hat ihren Plan."</div></div>
+
+            <div class="uebung">
+              <h5>Übung · 10 Min</h5>
+              <p>Schreibe ein 60-Sekunden-Telefon-Skript für deinen ersten Cold Call. Pflicht-Elemente:</p>
+              <ul>
+                <li>Einstieg mit Direktheit</li>
+                <li>Konkreter Anlass</li>
+                <li>Permission</li>
+                <li>Ein Pain-Punkt der Persona</li>
+                <li>Eine klare Frage, die das Gespräch öffnet</li>
+              </ul>
+              <textarea placeholder="Dein 60-Sek-Skript..." data-store="ex-2.3"></textarea>
+            </div>
+
+            <div class="quiz" data-quiz="q-2.3">
+              <h5>Knowledge Check</h5>
+              <h4>Wissen sichern · 5 Fragen</h4>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">1. Wie eröffnest du einen Cold Call am wirkungsvollsten?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Schwach — wirkt unsicher und vergibt Aufmerksamkeit."><span class="opt-letter">A</span>„Hi, hast du kurz Zeit für ein Gespräch?"</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Name, Firma, Direktheit + Permission ist die wirksamste Struktur."><span class="opt-letter">B</span>Mit klarer Direktheit + Permission-Frage</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Smalltalk verbrennt deine Sekunden — sofort Substanz."><span class="opt-letter">C</span>Mit Smalltalk über das Wetter</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">2. Wann sollte ein Follow-up nach einem Discovery Call spätestens raus?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Innerhalb von 24 Stunden ist der Standard."><span class="opt-letter">A</span>Innerhalb von 24 Stunden</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Zu spät — das Gespräch ist nicht mehr frisch."><span class="opt-letter">B</span>Innerhalb von 7 Tagen</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Viel zu spät — die Momentum ist verloren."><span class="opt-letter">C</span>Erst nach 2 Wochen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">3. Was gehört <em>nicht</em> in einen LinkedIn-Connect-Request?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Doch — Kontext zeigt, warum du dich vernetzen willst."><span class="opt-letter">A</span>Kontext zu einem Post</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Ein direkter Pitch im Connect-Request wirkt wie Spam."><span class="opt-letter">B</span>Ein direkter Pitch deines Produkts</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Doch — eine kurze Begrüßung ist okay."><span class="opt-letter">C</span>Eine kurze Begrüßung</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">4. Was ist die richtige Reaktion auf eine eigene Frage am Telefon?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Nachschieben überdeckt die Antwort, bevor sie kommt."><span class="opt-letter">A</span>Sofort eine zweite Frage nachschieben</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Die Pause ist Teil der Frage und lädt zur Antwort ein."><span class="opt-letter">B</span>Pause aushalten</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Du verlässt damit deine eigene Frage."><span class="opt-letter">C</span>Selbst antworten</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+
+              <div class="quiz-q">
+                <div class="quiz-q-text">5. Was ist der Hauptzweck eines Follow-ups nach einem Gespräch?</div>
+                <div class="quiz-options">
+                  <button class="quiz-opt" data-correct="false" data-fb="Ein Follow-up ist kein Pitch."><span class="opt-letter">A</span>Möglichst viele Argumente nachschieben</button>
+                  <button class="quiz-opt" data-correct="true" data-fb="Richtig. Klarheit, Verbindlichkeit und ein konkreter Next Step."><span class="opt-letter">B</span>Klarheit, Verbindlichkeit und Next Step erzeugen</button>
+                  <button class="quiz-opt" data-correct="false" data-fb="Höflichkeit ist nett, aber nicht der Zweck."><span class="opt-letter">C</span>Höflichkeit zeigen</button>
+                </div>
+                <div class="quiz-feedback"></div>
+              </div>
+            </div>
+
+            <div class="notes-area">
+              <h5>Deine Notizen</h5>
+              <textarea data-store="notes-2.3" placeholder="Was nimmst du aus diesem Kurs mit?"></textarea>
+              <div class="saved">✓ Gespeichert</div>
+            </div>
+
+            <div class="mark-done-row">
+              <span class="status-tag">Status: <span data-status="2.3">offen</span></span>
+              <button class="btn" onclick="markDone('2.3', this)">Als erledigt markieren</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== MODUL 3 (Struktur) ====== -->
+    <section id="page-module-3" class="page hidden">
+      <div class="crumb">Modul 3 · In Entwicklung</div>
+      <div class="module-header">
+        <h1 class="page-title">Discovery & <em>Bedarfsanalyse</em></h1>
+        <p class="page-lede">Wer nicht versteht, wonach der Kunde wirklich sucht, verkauft am Problem vorbei. In diesem Modul lernst du, Gespräche so zu führen, dass Bedarf und Pain Points sichtbar werden.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du bereitest Discovery Calls strukturiert mit Account-, Persona- und Hypothesen-Pain vor</li>
+            <li>Du wendest mindestens zwei Frametechniken (z.B. SPIN, BANT, MEDDIC) sicher an</li>
+            <li>Du formulierst aus Discovery-Ergebnissen eine konkrete Value Hypothese</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="3">
+        <div class="acc-item" data-course="3.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">3.1</span><span class="acc-title">Discovery Call Vorbereitung</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du baust eine Discovery-Vorbereitung aus Account, Persona, Hypothesen-Pain und 3 Kern-Fragen</li>
+                <li>Du erstellst eine schriftliche Agenda für jeden Discovery Call</li>
+                <li>Du erkennst Red Flags vor dem Call (kein Champion, kein Pain, kein Timing)</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="3.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">3.2</span><span class="acc-title">Fragetechniken: SPIN, BANT, MEDDIC</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du erklärst die Logik von SPIN (Situation, Problem, Implication, Need-payoff)</li>
+                <li>Du wendest BANT (Budget, Authority, Need, Timing) zur Lead-Qualifizierung an</li>
+                <li>Du nutzt MEDDIC für komplexe Deals (Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion)</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="3.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">3.3</span><span class="acc-title">Pain Points & Value Hypothesen</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du unterscheidest oberflächliche Pains von Root-Cause-Pains</li>
+                <li>Du quantifizierst Pain mit mindestens einer Zahl (Zeit, Kosten, Risiko)</li>
+                <li>Du formulierst aus Pain + Goals eine schriftliche Value Hypothese pro Account</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== MODUL 4 (Struktur) ====== -->
+    <section id="page-module-4" class="page hidden">
+      <div class="crumb">Modul 4 · In Entwicklung</div>
+      <div class="module-header">
+        <h1 class="page-title">Produktwissen & <em>Value Selling</em></h1>
+        <p class="page-lede">Features verkaufen niemand. Nutzen schon. In diesem Modul übersetzt du dein Produkt in messbaren Wert für deine Personas.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du erklärst jede Kernfunktion deines Produkts in Nutzen-Sprache</li>
+            <li>Du baust eine einfache, glaubwürdige ROI-Logik in deinen Pitch</li>
+            <li>Du positionierst gegen 2–3 Wettbewerber, ohne sie schlechtzureden</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="4">
+        <div class="acc-item" data-course="4.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">4.1</span><span class="acc-title">Produktargumentation</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du erklärst die 3–5 Kernfeatures eures Produkts in unter 60 Sekunden</li>
+                <li>Du übersetzt jedes Feature in einen klaren Persona-Nutzen</li>
+                <li>Du nutzt Storytelling (Vorher-Nachher) statt Feature-Listen</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="4.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">4.2</span><span class="acc-title">Nutzenargumentation & ROI</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du baust eine einfache ROI-Kalkulation (Zeit-/Kostenersparnis, Umsatzhebel) auf</li>
+                <li>Du übersetzt Nutzen in die KPIs deiner Persona</li>
+                <li>Du untermauerst Argumente mit mindestens 2 Customer Proofs (Case, Logo, Zahl)</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="4.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">4.3</span><span class="acc-title">Competitive Positioning</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du benennst die 3 wichtigsten Wettbewerber und ihre Stärken/Schwächen</li>
+                <li>Du positionierst sachlich, ohne Konkurrenz schlechtzureden</li>
+                <li>Du nutzt einen klaren „Why us, why now"-Pitch in unter 90 Sekunden</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== MODUL 5 (Struktur) ====== -->
+    <section id="page-module-5" class="page hidden">
+      <div class="crumb">Modul 5 · In Entwicklung</div>
+      <div class="module-header">
+        <h1 class="page-title">Verhandlung & <em>Abschluss</em></h1>
+        <p class="page-lede">Der Deal wird nicht im Angebot gewonnen, sondern in der Verhandlung verloren. In diesem Modul lernst du, Einwände souverän zu behandeln und Deals sauber abzuschließen.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du behandelst die 5 häufigsten Einwände mit einer strukturierten Methode</li>
+            <li>Du verteidigst Preis und Konditionen, ohne reflexartig Rabatte zu geben</li>
+            <li>Du führst Deals mit klaren Closing-Techniken zum Abschluss</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="5">
+        <div class="acc-item" data-course="5.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">5.1</span><span class="acc-title">Einwandbehandlung</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du unterscheidest echte Einwände von Vorwänden</li>
+                <li>Du wendest LAARC (Listen, Acknowledge, Assess, Respond, Confirm) konsistent an</li>
+                <li>Du kennst die 5 häufigsten Einwände im B2B-Sales und hast Antworten parat</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="5.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">5.2</span><span class="acc-title">Verhandlungstaktiken</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du verteidigst deinen Preis mit klarer Wertbegründung</li>
+                <li>Du nutzt Trades („Ja, wenn…") statt reiner Rabatte</li>
+                <li>Du erkennst typische Käufer-Taktiken (Anchoring, Nibbling, „Last Concession")</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="5.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">5.3</span><span class="acc-title">Closing-Techniken</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du führst einen Deal mit Mutual Action Plan (MAP) zum Abschluss</li>
+                <li>Du wendest mindestens drei Closing-Techniken sicher an (Assumptive, Summary, Alternative Close)</li>
+                <li>Du sicherst nach „Yes" die saubere Vertragsunterzeichnung mit klarem Prozess</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== MODUL 6 (Struktur) ====== -->
+    <section id="page-module-6" class="page hidden">
+      <div class="crumb">Modul 6 · In Entwicklung</div>
+      <div class="module-header">
+        <h1 class="page-title">Kundenbeziehung & <em>Sales-Tools</em></h1>
+        <p class="page-lede">Der Abschluss ist nicht das Ende — sondern der Anfang einer Beziehung. Und ohne saubere Tools wird kein Vertrieb skaliert. In diesem Modul lernst du beides: Bestandskunden-Logik und das Sales Tech Stack.</p>
+        <div class="module-goals">
+          <h5>Modul-Lernziele</h5>
+          <ul>
+            <li>Du erkennst Upsell- und Cross-Sell-Signale bei Bestandskunden</li>
+            <li>Du arbeitest produktiv mit CRM, Sales-Engagement-Tool und LinkedIn Sales Navigator</li>
+            <li>Du liest dein Dashboard und erkennst Pipeline-Risiken früh</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion" data-module="6">
+        <div class="acc-item" data-course="6.1">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">6.1</span><span class="acc-title">Account Management Basics</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du erstellst einen einfachen Account Plan pro Kunde</li>
+                <li>Du erkennst Upsell- und Cross-Sell-Trigger im Nutzungsverhalten</li>
+                <li>Du sicherst Renewals frühzeitig durch QBRs (Quarterly Business Reviews)</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="6.2">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">6.2</span><span class="acc-title">Sales Tech Stack</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du nutzt CRM (z.B. Salesforce, HubSpot) sauber für Pipeline- und Aktivitätenpflege</li>
+                <li>Du arbeitest produktiv mit einem Sales-Engagement-Tool (z.B. Outreach, Salesloft)</li>
+                <li>Du nutzt LinkedIn Sales Navigator für gezielte Account- und Personensuche</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+        <div class="acc-item" data-course="6.3">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span class="acc-num">6.3</span><span class="acc-title">Reporting & KPIs</span>
+            <span class="acc-status">In Vorbereitung</span><span class="acc-chev">▶</span>
+          </div>
+          <div class="acc-body">
+            <div class="goals-box"><h5>Lernziele</h5>
+              <ul>
+                <li>Du liest dein Dashboard und erklärst die Top-3-Kennzahlen deiner Rolle</li>
+                <li>Du erkennst Pipeline-Risiken (Slipping Deals, fehlende Next Steps, alte Stages)</li>
+                <li>Du bereitest deinen Forecast verlässlich vor (Commit / Best Case / Pipeline)</li>
+              </ul>
+            </div>
+            <p style="color:var(--muted);font-size:14px"><em>Inhalte folgen.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  /* ---------- Daten der Module ---------- */
+  const MODULES = [
+    {n:1, title:"Sales Grundlagen & Prospecting", desc:"Sales Cycle, ICP, Personas, Prospecting & CRM.", courses:["1.1","1.2","1.3"], status:"full"},
+    {n:2, title:"Cold Outreach & Kommunikation", desc:"E-Mail, Telefon, LinkedIn und Follow-up im Detail.", courses:["2.1","2.2","2.3"], status:"full"},
+    {n:3, title:"Discovery & Bedarfsanalyse", desc:"Discovery Calls, Fragetechniken, Pain & Value.", courses:["3.1","3.2","3.3"], status:"placeholder"},
+    {n:4, title:"Produktwissen & Value Selling", desc:"Produkt, Nutzen, ROI und Competitive Positioning.", courses:["4.1","4.2","4.3"], status:"placeholder"},
+    {n:5, title:"Verhandlung & Abschluss", desc:"Einwände, Verhandlung, Closing-Techniken.", courses:["5.1","5.2","5.3"], status:"placeholder"},
+    {n:6, title:"Kundenbeziehung & Sales-Tools", desc:"Account Management, Tech Stack, Reporting.", courses:["6.1","6.2","6.3"], status:"placeholder"}
+  ];
+
+  const ALL_COURSES = MODULES.flatMap(m => m.courses);
+  const STORAGE_KEY = "sales_lms_state_v1";
+
+  function loadState(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {} }
+    catch(e){ return {} }
+  }
+  function saveState(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)) }
+  let state = loadState();
+  if(!state.done) state.done = {};
+  if(!state.notes) state.notes = {};
+  if(!state.checks) state.checks = {};
+  if(!state.exercises) state.exercises = {};
+
+  /* ---------- Sidebar nav ---------- */
+  function buildSidebar(){
+    const ul = document.getElementById('moduleNav');
+    ul.innerHTML = '';
+    MODULES.forEach(m => {
+      const allDone = m.courses.every(c => state.done[c]);
+      const li = document.createElement('li');
+      li.className = 'nav-item' + (allDone ? ' completed':'');
+      li.dataset.target = 'page-module-' + m.n;
+      li.innerHTML = `<span class="dot"></span><span class="lbl-num">0${m.n}</span> ${m.title}`;
+      ul.appendChild(li);
+    });
+    // bind clicks
+    document.querySelectorAll('.nav-item').forEach(el=>{
+      el.onclick = ()=> navigateTo(el.dataset.target, el);
+    });
+  }
+
+  /* ---------- Module overview grid ---------- */
+  function buildOverview(){
+    const grid = document.getElementById('moduleGrid');
+    grid.innerHTML = '';
+    MODULES.forEach(m=>{
+      const doneCount = m.courses.filter(c=>state.done[c]).length;
+      const allDone = doneCount === m.courses.length;
+      let pill = '';
+      if(allDone) pill = '<span class="pill completed">Abgeschlossen</span>';
+      else if(m.status==='placeholder') pill = '<span class="pill placeholder">In Vorbereitung</span>';
+      else pill = '<span class="pill">Vollständig</span>';
+      const card = document.createElement('div');
+      card.className='module-card';
+      card.innerHTML = `
+        ${pill}
+        <div class="mod-num">Modul 0${m.n}</div>
+        <h3>${m.title}</h3>
+        <p>${m.desc}</p>
+        <div class="stats">
+          <span><b>${m.courses.length}</b> Kurse</span>
+          <span><b>${doneCount}</b>/${m.courses.length} erledigt</span>
+        </div>`;
+      card.onclick = ()=> {
+        const navEl = document.querySelector(`.nav-item[data-target="page-module-${m.n}"]`);
+        navigateTo('page-module-'+m.n, navEl);
+      };
+      grid.appendChild(card);
+    });
+    document.getElementById('statDone').textContent = ALL_COURSES.filter(c=>state.done[c]).length;
+  }
+
+  /* ---------- Navigation ---------- */
+  function navigateTo(target, navEl){
+    document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+    const el = document.getElementById(target);
+    if(el) el.classList.remove('hidden');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    if(navEl) navEl.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ---------- Accordion ---------- */
+  function toggleAcc(headerEl){
+    const item = headerEl.closest('.acc-item');
+    item.classList.toggle('open');
+  }
+  window.toggleAcc = toggleAcc;
+
+  /* ---------- Quiz ---------- */
+  function bindQuizzes(){
+    document.querySelectorAll('.quiz-q').forEach(q=>{
+      const opts = q.querySelectorAll('.quiz-opt');
+      const fb = q.querySelector('.quiz-feedback');
+      opts.forEach(o=>{
+        o.addEventListener('click', ()=>{
+          if(o.classList.contains('locked')) return;
+          const correct = o.dataset.correct === 'true';
+          o.classList.add(correct ? 'correct' : 'wrong');
+          // lock siblings if correct
+          if(correct){
+            opts.forEach(x=>x.classList.add('locked'));
+            opts.forEach(x=>{
+              if(x.dataset.correct==='true') x.classList.add('correct');
+            });
+          }
+          fb.textContent = o.dataset.fb;
+          fb.className = 'quiz-feedback show ' + (correct?'correct':'wrong');
+        });
+      });
+    });
+  }
+
+  /* ---------- Notes & Exercises persistence ---------- */
+  function bindStorage(){
+    document.querySelectorAll('textarea[data-store]').forEach(t=>{
+      const key = t.dataset.store;
+      if(key.startsWith('notes-')){
+        t.value = state.notes[key] || '';
+      } else {
+        t.value = state.exercises[key] || '';
+      }
+      t.addEventListener('input', ()=>{
+        if(key.startsWith('notes-')){
+          state.notes[key] = t.value;
+        } else {
+          state.exercises[key] = t.value;
+        }
+        saveState(state);
+        const savedEl = t.parentElement.querySelector('.saved');
+        if(savedEl){
+          savedEl.classList.add('show');
+          clearTimeout(t._sv);
+          t._sv = setTimeout(()=>savedEl.classList.remove('show'), 1500);
+        }
+      });
+    });
+
+    document.querySelectorAll('.check-list input[type="checkbox"]').forEach(cb=>{
+      const id = cb.dataset.id;
+      if(state.checks[id]){
+        cb.checked = true;
+        cb.parentElement.classList.add('checked');
+      }
+      cb.addEventListener('change', ()=>{
+        state.checks[id] = cb.checked;
+        saveState(state);
+        cb.parentElement.classList.toggle('checked', cb.checked);
+      });
+    });
+  }
+
+  /* ---------- Mark done ---------- */
+  function markDone(courseId, btn){
+    state.done[courseId] = !state.done[courseId];
+    saveState(state);
+    refreshDoneUI();
+  }
+  window.markDone = markDone;
+
+  function refreshDoneUI(){
+    // status texts + accordion status
+    document.querySelectorAll('[data-status]').forEach(el=>{
+      const id = el.dataset.status;
+      if(state.done[id]){
+        el.textContent = 'erledigt ✓';
+        el.parentElement.classList.add('done');
+      } else {
+        el.textContent = 'offen';
+        el.parentElement.classList.remove('done');
+      }
+    });
+    // accordion status header
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      const id = item.dataset.course;
+      const statusEl = item.querySelector('.acc-status');
+      if(state.done[id]){
+        statusEl.textContent = 'Abgeschlossen ✓';
+        statusEl.classList.add('done');
+      }
+    });
+    // mark-done button text
+    document.querySelectorAll('.mark-done-row .btn').forEach(b=>{
+      const row = b.closest('.acc-item');
+      if(!row) return;
+      const id = row.dataset.course;
+      b.textContent = state.done[id] ? 'Wieder öffnen' : 'Als erledigt markieren';
+      b.classList.toggle('secondary', !!state.done[id]);
+    });
+
+    // global progress
+    const total = ALL_COURSES.length;
+    const done = ALL_COURSES.filter(c => state.done[c]).length;
+    const pct = Math.round(done/total*100);
+    document.getElementById('globalProgressFill').style.width = pct+'%';
+    document.getElementById('globalProgressPct').textContent = pct + '% abgeschlossen';
+
+    // sidebar completion
+    document.querySelectorAll('#moduleNav .nav-item').forEach(li=>{
+      const target = li.dataset.target;
+      const mNum = parseInt(target.split('-').pop(),10);
+      const m = MODULES.find(x=>x.n===mNum);
+      if(!m) return;
+      const allDone = m.courses.every(c=>state.done[c]);
+      li.classList.toggle('completed', allDone);
+    });
+
+    // overview re-render counters
+    buildOverview();
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    buildSidebar();
+    buildOverview();
+    bindQuizzes();
+    bindStorage();
+    refreshDoneUI();
+  });
+</script>
+</body>
+</html>
